@@ -10,18 +10,7 @@ from typing import Any
 class PriorityQueue:
     def __init__(self):
 
-        self._priority_queue = {0: [],
-                                1: [],
-                                2: [],
-                                3: [],
-                                4: [],
-                                5: [],
-                                6: [],
-                                7: [],
-                                8: [],
-                                9: [],
-                                10: []
-                                }
+        self._priority_queue = {queue: [] for queue in range(11)}
 
     def enqueue(self, elem: Any, priority: int = 0) -> None:
         """
@@ -40,14 +29,9 @@ class PriorityQueue:
 
         :return: dequeued element
         """
-        try:
-            for queue_index in range(11):
-                if self._priority_queue[queue_index]:
-                    return self._priority_queue[queue_index].pop(0)
-
-        except KeyError:
-            return None
-
+        for queue_index in range(11):
+            if self._priority_queue[queue_index]:
+                return self._priority_queue[queue_index].pop(0)
 
     def peek(self, ind: int = 0, priority: int = 0) -> Any:
         """
@@ -66,6 +50,8 @@ class PriorityQueue:
 
         :return: None
         """
-        self._priority_queue.clear()
+        for queue_index in range(11):
+            if self._priority_queue[queue_index]:
+                self._priority_queue[queue_index].clear()
 
 
