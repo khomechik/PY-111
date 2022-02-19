@@ -8,9 +8,10 @@ from typing import Any
 
 
 class PriorityQueue:
-    def __init__(self):
+    def __init__(self, priorities=11):
+        self._priorities = priorities
 
-        self._priority_queue = {queue: [] for queue in range(11)}
+        self._priority_queue = {priority: [] for priority in range(priorities)}
 
     def enqueue(self, elem: Any, priority: int = 0) -> None:
         """
@@ -20,7 +21,7 @@ class PriorityQueue:
         :return: Nothing
 
         """
-        if priority in self._priority_queue.keys():
+        if priority in range(self._priorities):
             self._priority_queue[priority].append(elem)
 
     def dequeue(self) -> Any:
@@ -29,9 +30,9 @@ class PriorityQueue:
 
         :return: dequeued element
         """
-        for queue_index in range(11):
-            if self._priority_queue[queue_index]:
-                return self._priority_queue[queue_index].pop(0)
+        for priority in range(self._priorities):
+            if self._priority_queue[priority]:
+                return self._priority_queue[priority].pop(0)
 
     def peek(self, ind: int = 0, priority: int = 0) -> Any:
         """
@@ -40,7 +41,7 @@ class PriorityQueue:
         :param ind: index of element (count from the beginning)
         :return: peeked element
         """
-        if priority in self._priority_queue.keys():
+        if priority in range(self._priorities):
             if ind < len(self._priority_queue[priority]):
                 return self._priority_queue[priority][ind]
 
@@ -50,8 +51,6 @@ class PriorityQueue:
 
         :return: None
         """
-        for queue_index in range(11):
-            if self._priority_queue[queue_index]:
-                self._priority_queue[queue_index].clear()
-
-
+        for priority in range(self._priorities):
+            if self._priority_queue[priority]:
+                self._priority_queue[priority].clear()
