@@ -1,5 +1,6 @@
 from typing import Hashable, Mapping, Union
 import networkx as nx
+from queue import PriorityQueue
 
 
 def dijkstra_algo(g: nx.DiGraph, current_node: Hashable) -> Mapping[Hashable, Union[int, float]]:
@@ -9,21 +10,26 @@ def dijkstra_algo(g: nx.DiGraph, current_node: Hashable) -> Mapping[Hashable, Un
     :param current_node: starting node from g
     :return: dict like {'node1': 0, 'node2': 10, '3': 33, ...} with path costs, where nodes are nodes from g
     """
-    visited = {node: False for node in g.nodes}
-    total_costs = {node: float("inf") for node in g.nodes}
-    current_node = 1
+
+    visited = []
+    total_costs = {node: float('inf') for node in g.nodes}
     total_costs[current_node] = 0
 
-    while True:
-        visited[current_node] = True
+    pq = PriorityQueue()
+    pq.put((0, current_node))
+
+    while not pq.empty():
+        (dist, current_node) = pq.get()
+        visited.append(current_node)
         neighbours = g[current_node]
         for neighbour in neighbours:
             edge = g[current_node][neighbour]
             weight = edge['weight']
-            total_costs[neighbour] = min(total_costs[neighbour], total_costs[current_node] + weight)
+            if neighbour not in visited:
+                old_cost = total_costs[neighbour]
+                new_cost = total_costs[current_node] + weight
+                if new_cost < old_cost:
+                    pq.put((new_cost, neighbour))
+                    total_costs[neighbour] = new_cost
 
-        not_visited_total_costs = {node: cost for node, cost in total_costs.items() if not visited[node]}
-        if not not_visited_total_costs:
-            break
-        current_node, _ = min(not_visited_total_costs.items(), key=lambda item: item[0])
-        return total_costs
+    return total_costs
