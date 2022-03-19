@@ -1,7 +1,6 @@
-"""
-Taylor series
-"""
 from typing import Union
+
+import math
 
 
 def ex(x: Union[int, float]) -> float:
@@ -11,8 +10,10 @@ def ex(x: Union[int, float]) -> float:
     :param x: x value
     :return: e^x value
     """
-    print(x)
-    return 0
+    e_to_x = 0
+    for i in range(10):
+        e_to_x += x ** i / math.factorial(i)
+    return e_to_x
 
 
 def sinx(x: Union[int, float]) -> float:
@@ -22,5 +23,11 @@ def sinx(x: Union[int, float]) -> float:
     :param x: x value
     :return: sin(x) value
     """
-    print(x)
-    return 0
+
+    sin_x = 0
+    for i in range(1, 10):
+        sin_x += ((-1) ** (i - 1) * x ** (2 * i - 1)) / math.factorial(2 * i - 1)
+
+    return sin_x
+
+
