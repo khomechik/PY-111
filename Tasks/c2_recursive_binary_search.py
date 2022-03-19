@@ -1,13 +1,36 @@
 from typing import Sequence, Optional
 
 
-def binary_search(elem: int, arr: Sequence) -> Optional[int]:
+def binary_search(elem: int, arr: Sequence, left_border = None, right_border = None) -> Optional[int]:
     """
-    Performs binary search of given element inside of array (using recursive way)
+        Performs binary search of given element inside of array (using recursive way)
+        :param elem: element to be found
+        :param arr: array where element is to be found
+        :return: Index of element if it's presented in the arr, None otherwise
+        """
 
-    :param elem: element to be found
-    :param arr: array where element is to be found
-    :return: Index of element if it's presented in the arr, None otherwise
-    """
-    print(elem, arr)
-    return None
+    if left_border is None:
+        left_border = 0
+    if right_border is None:
+        right_border = len(arr) - 1
+    if left_border > right_border:
+        return None
+
+    middle_index = left_border + (right_border - left_border) // 2
+    middle_value = arr[middle_index]
+    while left_border <= right_border:
+        result = []
+        if middle_value == elem:
+            result.append(middle_index)
+        elif middle_value < elem:
+            new_left_border = middle_index + 1
+            a = binary_search(elem, arr, new_left_border, right_border)
+            result.append(a)
+        elif middle_value > elem:
+            new_right_border = middle_index - 1
+            a = binary_search(elem, arr, left_border, new_right_border)
+            result.append(a)
+        return min(result)
+
+    else:
+        return -1
